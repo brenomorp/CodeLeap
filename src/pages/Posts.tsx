@@ -2,7 +2,7 @@ import Button from "../components/Button";
 import Card from "../components/Card";
 import EditModal from "../components/EditModal";
 import RemoveModal from "../components/RemoveModal";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../actions/postSlice";
 import { AppDispatch } from "../redux/store";
@@ -10,7 +10,10 @@ import { RootState } from "../redux/store";
 import LoadingScreen from "../components/LoadingScreen";
 
 function Posts() {
-  const { data, loading } = useSelector((state: RootState) => state.post);
+  const [content, setContent] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+
+  const { data, loading } = useSelector((state: RootState) => state.posts);
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     dispatch(getPosts());
@@ -37,19 +40,27 @@ function Posts() {
               id="title"
               placeholder="Hello World"
               className="mb-6 w-full rounded-lg border border-[#777777] bg-transparent px-3 py-2 placeholder:text-sm"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
             <label htmlFor="content" className="mb-2 text-base leading-snug">
-              Title
+              Content
             </label>
             <textarea
               name="content"
               placeholder="Content here"
               id="content"
               className="mb-6 h-20 w-full resize-none rounded-lg border border-[#777777] bg-transparent px-3 py-2 placeholder:text-sm"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
             />
-            <Button color="blue" type="submit">
-              Create
-            </Button>
+            {!content || !title ? (
+              <Button disabled>Create</Button>
+            ) : (
+              <Button color="blue" type="submit">
+                Create
+              </Button>
+            )}
           </form>
         </div>
 

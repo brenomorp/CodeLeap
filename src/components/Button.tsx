@@ -1,10 +1,24 @@
+import { ReactNode } from "react";
+
 type ButtonProps = {
-  children: string;
+  children: string | ReactNode;
   color?: string;
-  type: "button" | "submit" | "reset";
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 };
 
-function Button({ children, color, type }: ButtonProps) {
+function Button({ children, color, type, disabled }: ButtonProps) {
+  if (disabled) {
+    return (
+      <button
+        type="button"
+        className={`h-8 w-32 cursor-not-allowed self-end rounded-lg bg-slate-700/50 text-white`}
+        disabled
+      >
+        <span className="text-base font-bold">{children}</span>
+      </button>
+    );
+  }
   if (color === "blue") {
     return (
       <button

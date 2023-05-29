@@ -1,5 +1,5 @@
 import Lottie from "lottie-react";
-import animationData from "../../public/animations/codeleap-loading.json";
+import animationData from "../assets/animations/codeleap-loading.json";
 
 function LoadingScreen() {
   return (

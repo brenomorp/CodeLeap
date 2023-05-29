@@ -7,6 +7,12 @@ export const getPosts = createAsyncThunk("posts/getPosts", async () => {
     .then((res) => res.data);
 });
 
+// export const addPost = createAsyncThunk("posts/addPost", async () => {
+//   return axios.post("https://dev.codeleap.co.uk/careers/", {
+
+//   });
+// });
+
 interface IState {
   loading: boolean;
   error: string | null | undefined;
@@ -22,9 +28,15 @@ interface IState {
       content: string;
     }>;
   };
+  newPostData: {
+    username: string;
+    created_datetime: null | Date;
+    title: string;
+    content: string;
+  };
 }
 
-const initialState: IState = {
+export const initialState: IState = {
   data: {
     count: 0,
     next: null,
@@ -41,12 +53,25 @@ const initialState: IState = {
   },
   loading: false,
   error: null,
+  newPostData: {
+    username: "",
+    created_datetime: null,
+    title: "",
+    content: "",
+  },
 };
 
 const postSlice = createSlice({
-  name: "user",
+  name: "post",
   initialState,
-  reducers: {},
+  reducers: {
+    getUserName: (state, action) => {
+      state.newPostData.username = action.payload;
+    },
+    getPostData: (state, action) => {
+      state.newPostData = { ...state.newPostData, ...action.payload };
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getPosts.pending, (state) => {
       state.loading = true;
@@ -62,4 +87,5 @@ const postSlice = createSlice({
   },
 });
 
-export const postReducer = postSlice.reducer;
+export const { getUserName, getPostData } = postSlice.actions;
+export const postsReducer = postSlice.reducer;
